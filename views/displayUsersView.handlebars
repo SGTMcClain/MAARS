@@ -1,0 +1,37 @@
+<div>
+	<div class="table-responsive">
+		<table class="table table-condensed">
+			<thead>
+				<tr>
+					<th>UserID</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Email</th>
+					<th>Title</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each data}}
+					<tr>
+						<td>{{this.id}}</td>
+						<td>{{this.firstName}}</td>
+						<td>{{this.lastName}}</td>
+						<td>{{this.email}}</td>
+						<td>{{this.title}}</td>
+						</td>
+						<td>
+							<a href="#/{{this.id}}">Edit</a>
+							<a href="#/{{this.id}}">Delete</a>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+			<tfooter>
+				<tr><td>
+				<button class="btn btn-primary" 
+						onClick="">Add New User</button>
+				</td></tr>
+			</tfooter>
+		</table>
+	</div>
+</div>

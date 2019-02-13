@@ -1,0 +1,27 @@
+{
+  "name": "bu602_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SGTMcClain/BU602_Project.git"
+  },
+  "author": "Nathan McClain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SGTMcClain/BU602_Project/issues"
+  },
+  "homepage": "https://github.com/SGTMcClain/BU602_Project#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "handlebars": "^4.1.0",
+    "mongodb": "^3.1.13",
+    "mongoose": "^5.4.11",
+    "request": "^2.88.0"
+  }
+}
