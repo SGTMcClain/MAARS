@@ -5,6 +5,7 @@ const credentials = require('./credentials');
 var queryUsers = 'query{users{id, firstName, lastName, email, title, description, roles{id, name, description}}}';
 var manifestData;
 
+
 function selectQueryOptions(selectedQuery, methodType){
     let queryOptions = {
         method: methodType, //method variable should be POST or GET
@@ -28,18 +29,22 @@ function manifestQuery(query, methodType) {
 
     let options = selectQueryOptions(query, methodType);
     
-    request(options, (error, response, body) => {
+     request(options, (error, response, body) => {
         if (error) {throw new Error(error);}
 
-        console.log(body.data);
-
+         queryCallback(body.data);
+        
     });
-    console.log('manifest data is: ')
-    console.log(manifestData);
-    
-    return manifestData; 
+
+    return manifestData;
 }
 
+function queryCallback(data){
+    manifestData = data;
+    // console.log('manifest data is: ')
+    // console.log(manifestData);
+}
+ 
 
 
 function queryListofLocations() {
@@ -48,32 +53,15 @@ function queryListofLocations() {
 
 
 
-module.exports.queryUsers = (request, response, next) => {
+module.exports.queryUsers = async(request, response, next) => {
     // let query = request.params.query;
     let query = 'query{users{id, firstName, lastName, email, title, description, roles{id, name, description}}}'
     
-    let data = manifestQuery(query, 'POST');
-    console.log('result from manifest Query is:')
-    console.log(data);
-    // , (info) => {
-    //     // if(err) { console.log ('Error doing user query', err);}
-    //     // if(!info) {response.render('404');}
-        
-    //     console.log('Get Info');
-    //     console.log(info);
+    let data = await manifestQuery(query, 'POST');
+    console.log('result from manifest Query is:');
+    console.log(data.users);
 
-    //     // response.render('userList',{
-    //     //     title: "Users List",
-    //     //     data:{
-    //     //         id: info.id,
-    //     //         firstName: info.firstName,
-    //     //         lastName: info.lastName,
-    //     //         email: info.email,
-    //     //         title: info.title
-    //     //     }
-    //     // })
-    // });
-    response.render('displayUsersView', data);
+    response.render('displayUsersView', data.users);
     // console.log(data);
 
 }
