@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.engine('handlebars', 
     handlebars({
@@ -27,6 +28,6 @@ app.use((req, res) => {
     res.render('404');
 });
 
-app.listen(3000, () => {
-    console.log('http://localhost:3000');
+app.listen(PORT, () => {
+    console.log('App listening on PORT: ' + PORT);
 });
