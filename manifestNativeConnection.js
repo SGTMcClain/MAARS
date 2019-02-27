@@ -1,5 +1,53 @@
+
 var http = require("https");
-const credentials = require('./credentials');
+const staticCredentials = require('./credentials');
+const bodyParser = require("body-parser");
+const url = require("url");
+var authToken;
+
+
+//handle login
+module.exports.login = (request, response, next) => {
+  response.render('login');
+}
+
+module.exports.submitLogin = (request, response, next) => {
+  var options = {
+    "method": "POST",
+    "hostname": "boozallen.taqmanifest.com",
+    "port": 443,
+    "path": "/rest/signin/v2",
+    "headers": {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+      "Authorization": "Bearer ",//JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsInN1YmRvbWFpbiI6ImJvb3phbGxlbiIsImlhdCI6MTU1MDA5MDgwNCwiZXhwIjoxNTUwMTc3MjA0fQ.o_EUAN8rcnG8LnHvf8UNtmg9pLBeIc_fpGUwGJFH6DA",
+      // "cache-control": "no-cache",
+      // "Postman-Token": "b3cd247c-bb35-4da2-a712-f952f68374cb"
+    }
+  };
+
+  var req = http.request(options, function (res) {
+    var chunks = [];
+  
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+  
+    res.on("end", function () {
+      var body = Buffer.concat(chunks);
+      // console.log(JSON.parse(body));
+      var responseBody = JSON.parse(body)
+      // console.log(responseBody.user.token);
+      authToken = responseBody.user.token;
+      response.render('loginSuccessful');
+    });
+  });
+  var parseRequest = url.parse(request.url, true).query;
+  console.log(parseRequest);
+  console.log("Request Email " + parseRequest.email + "\nRequest Password: " + parseRequest.password);
+  req.write(JSON.stringify({ email: parseRequest.email, password: parseRequest.password }));
+  req.end();
+}
 
 module.exports.queryUsers = (request, response, next) => {
 
@@ -9,7 +57,7 @@ module.exports.queryUsers = (request, response, next) => {
         "path": "/graphql/v2",
         "headers": {
           "Content-Type": "application/json",
-          "Authorization": credentials.manifestAuthKey,
+          "Authorization": authToken,
           "cache-control": "no-cache",
           "Postman-Token": "6beff5c5-c5c2-47f4-9182-2be6f70d2ff8"
         }
@@ -45,7 +93,7 @@ module.exports.queryJobsWithEvidence = (request, response, next) => {
         "path": "/graphql/v2",
         "headers": {
           "Content-Type": "application/json",
-          "Authorization": credentials.manifestAuthKey,
+          "Authorization": authToken,
           "cache-control": "no-cache",
           "Postman-Token": "6beff5c5-c5c2-47f4-9182-2be6f70d2ff8"
         }
@@ -80,7 +128,7 @@ module.exports.queryListofLocations = (request, response, next) => {
         "path": "/graphql/v2",
         "headers": {
           "Content-Type": "application/json",
-          "Authorization": credentials.manifestAuthKey,
+          "Authorization": authToken,
           "cache-control": "no-cache",
           "Postman-Token": "6beff5c5-c5c2-47f4-9182-2be6f70d2ff8"
         }
@@ -106,3 +154,4 @@ module.exports.queryListofLocations = (request, response, next) => {
       req.write(JSON.stringify({ query: 'query{locations{locationId, name, owner, longitude, latitude, description, locationId, associatedFiles {id, name, fileType}, childLocations{locationId, name, owner, longitude, latitude, description, locationId,childLocations{locationId, name, owner, longitude}}}}' }));
       req.end();
 }
+
