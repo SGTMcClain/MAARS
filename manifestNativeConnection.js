@@ -8,10 +8,12 @@ var authToken;
 
 //handle login
 module.exports.login = (request, response, next) => {
+  console.log("Login Page");
   response.render('login');
 }
 
 module.exports.submitLogin = (request, response, next) => {
+  console.log("DID SOMETHING")
   var options = {
     "method": "POST",
     "hostname": "boozallen.taqmanifest.com",
@@ -19,10 +21,8 @@ module.exports.submitLogin = (request, response, next) => {
     "path": "/rest/signin/v2",
     "headers": {
       "Content-Type": "application/json",
-      "Cache-Control": "no-cache",
-      "Authorization": "Bearer ",//JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsInN1YmRvbWFpbiI6ImJvb3phbGxlbiIsImlhdCI6MTU1MDA5MDgwNCwiZXhwIjoxNTUwMTc3MjA0fQ.o_EUAN8rcnG8LnHvf8UNtmg9pLBeIc_fpGUwGJFH6DA",
-      // "cache-control": "no-cache",
-      // "Postman-Token": "b3cd247c-bb35-4da2-a712-f952f68374cb"
+      "Cache-Control": "no-cache"
+
     }
   };
 
@@ -44,8 +44,8 @@ module.exports.submitLogin = (request, response, next) => {
   });
   var parseRequest = url.parse(request.url, true).query;
   console.log(parseRequest);
-  console.log("Request Email " + parseRequest.email + "\nRequest Password: " + parseRequest.password);
-  req.write(JSON.stringify({ email: parseRequest.email, password: parseRequest.password }));
+  console.log("Request Email " + parseRequest.email + "\nRequest Password: " + parseRequest.pass);
+  req.write(JSON.stringify({ email: parseRequest.email, password: parseRequest.pass }));
   req.end();
 }
 

@@ -23,10 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var routes = require('./routes/index');
 app.use('/', routes);
 
-app.use((req, res) => {
-    res.status(404);
-    res.render('404');
-});
+// app.use((req, res) => {
+//     res.status(404);
+//     res.render('404');
+// });
 
 app.listen(PORT, () => {
     console.log('App listening on PORT: ' + PORT);

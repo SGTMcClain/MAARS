@@ -6,18 +6,18 @@ const router = express.Router();
 const manifest = require("../manifestNativeConnection"); 
 const loginPage = manifest.login;
 const submitLogin = manifest.submitLogin;
-const queryJobsWithEvidence = manifest.queryJobsWithEvidence
+const queryJobsWithEvidence = manifest.queryJobsWithEvidence;
 // const queryAllJobs
 const queryUsers = manifest.queryUsers;
-const queryLocations = manifest.queryListofLocations
+const queryLocations = manifest.queryListofLocations;
 
 //router specs
 // router.get('/', (req, res, next) => {
 //     // res.redirect('/displayUsers');
 // });
 
-router.get('/', loginPage)
-router.get('/submitLogin', submitLogin)
+router.get('/', loginPage);
+router.get('/submitLogin', submitLogin);
 router.get('/displayUsers', queryUsers);
 router.get('/locations', queryLocations);
 router.get('/jobs', queryJobsWithEvidence);
