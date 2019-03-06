@@ -1,15 +1,32 @@
 
 var http = require("https");
+const mongoose = require ("mongoose");
 const staticCredentials = require('./credentials');
 const bodyParser = require("body-parser");
 const url = require("url");
 var authToken;
+const Locations = require ('./models/Location.model');
+const cred = require('./credentials');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
+let options = {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  promiseLibrary: global.Promise,
+  autoReconnect: true
+}
+let db = 'mongodb://' + cred.dbUser + ':' + cred.dbPassword + '@ds011785.mlab.com:11785/heroku_9lcp033p';
+mongoose.connect(db, options);
 
 
 //handle login
 module.exports.login = (request, response, next) => {
   console.log("Login Page");
   response.render('login');
+    console.log(request.cookies);
+    console.log('***********');
+    console.log(request.session);
 }
 
 module.exports.submitLogin = (request, response, next) => {
@@ -39,12 +56,16 @@ module.exports.submitLogin = (request, response, next) => {
       var responseBody = JSON.parse(body)
       // console.log(responseBody.user.token);
       authToken = responseBody.user.token;
+      request.session.jwt = responseBody.user.token;
+      request.session.name = 'Manifest';
       response.render('loginSuccessful');
+      console.log('Session jwt')
+      console.log(request.session.jwt);
     });
   });
   var parseRequest = url.parse(request.url, true).query;
   console.log(parseRequest);
-  console.log("Request Email " + parseRequest.email + "\nRequest Password: " + parseRequest.pass);
+  console.log("Request Email: " + parseRequest.email + "\nRequest Password: " + parseRequest.pass);
   req.write(JSON.stringify({ email: parseRequest.email, password: parseRequest.pass }));
   req.end();
 }
@@ -93,7 +114,7 @@ module.exports.queryJobsWithEvidence = (request, response, next) => {
         "path": "/graphql/v2",
         "headers": {
           "Content-Type": "application/json",
-          "Authorization": authToken,
+          "Authorization": session.jwt,
           "cache-control": "no-cache",
           "Postman-Token": "6beff5c5-c5c2-47f4-9182-2be6f70d2ff8"
         }
@@ -142,9 +163,15 @@ module.exports.queryListofLocations = (request, response, next) => {
         });
       
         res.on("end", function () {
-          var body = Buffer.concat(chunks);
-          body = JSON.parse(body.toString());
-          console.log(body.data);
+          var buffer = Buffer.concat(chunks);
+          body = JSON.parse(buffer.toString());
+          console.log(body.data.locations[0]);
+          
+          // add data to database
+          // for(var i = 0; i < body.data.locations.length; i++){
+          //   console.log(body.data.locations[i]);
+          //   Locations.create(body.data.locations[i])
+          // }
           response.render('displayLocations', body.data);
 
         });
