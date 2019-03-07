@@ -11,6 +11,19 @@ const queryJobsWithEvidence = manifest.queryJobsWithEvidence;
 const queryUsers = manifest.queryUsers;
 const queryLocations = manifest.queryListofLocations;
 
+//mongo
+const mongoConn = require("../mongoConnection");
+const mongoUsers = mongoConn.mongoUsers;
+const mongoLocations = mongoConn.mongoLocations;
+const mongoJobs = mongoConn.mongoJobs;
+const mongoDeleteUser = mongoConn.deleteUser;
+const xmlUserExport = mongoConn.userXmlExport;
+const jsonUserExport = mongoConn.userJsonExport;
+const xmlLocationExport = mongoConn.locationXmlExport;
+const jsonLocationExport = mongoConn.locationJsonExport;
+const xmlJobExport = mongoConn.jobXmlExport;
+const jsonJobExport = mongoConn.jobJsonExport;
+
 //router specs
 // router.get('/', (req, res, next) => {
 //     // res.redirect('/displayUsers');
@@ -21,5 +34,15 @@ router.get('/submitLogin', submitLogin);
 router.get('/displayUsers', queryUsers);
 router.get('/locations', queryLocations);
 router.get('/jobs', queryJobsWithEvidence);
+router.get('/mongoUsers', mongoUsers);
+router.get('/mongoLocations', mongoLocations);
+router.get('/mongoJobs', mongoJobs); 
+router.get('/deleteUser/:_id', mongoDeleteUser);
+router.get('/xmlExportUser', xmlUserExport);
+router.get('/jsonExportUser', jsonUserExport);
+router.get('/xmlExportLocation', xmlLocationExport);
+router.get('/jsonExportLocation', jsonLocationExport);
+router.get('/xmlExportJob', xmlJobExport);
+router.get('/jsonExportJob', jsonJobExport);
 
 module.exports = router;
