@@ -162,9 +162,9 @@ module.exports.userJsonExport = (req, res, next) => {
 }
 
 module.exports.submitAddUser = (req, res, next) => {
-    console.log(req.params);
+    console.log(req.query);
     
-    // Users.create()
+    Users.create(req.query);
 
     Users.find({}, (err, users) => {
         if(err) {console.log("Error : %s ", err);}

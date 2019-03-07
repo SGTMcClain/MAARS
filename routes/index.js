@@ -33,7 +33,7 @@ const addUser = mongoConn.addUser;
 
 router.get('/', loginPage);
 router.get('/submitLogin', submitLogin);
-router.post('/submitAddUser', submitAddUser);
+router.get('/submitAddUser', submitAddUser);
 router.get('/displayUsers', queryUsers);
 router.get('/locations', queryLocations);
 router.get('/jobs', queryJobsWithEvidence);
