@@ -20,7 +20,7 @@
 						<td>{{this.title}}</td>
 						</td>
 						<td>
-							<a href="#/{{this._id}}">Edit</a>
+							{{!-- <a href="#/{{this._id}}">Edit</a> --}}
 							<a href="/deleteUser/{{this._id}}">Delete</a>
 						</td>
 					</tr>
@@ -28,14 +28,15 @@
 			</tbody>
 			<tfooter>
 				<tr><td>
-				<button class="btn btn-primary" 
-						onClick="">Add New User</button>
+				{{!-- <button class="btn btn-primary" 
+						onClick="">Add New User</button> --}}
 				</td></tr>
-				<nav>
-					<a href='#'>Get XML</a>
-					<a href='#'>Get JSON</a>
-				</nav>
+				
+					
+				
 			</tfooter>
 		</table>
+		<a href='/xmlExportUser'>Get XML</a>
+		<a href='/jsonExportUser'>Get JSON</a>
 	</div>
 </div>

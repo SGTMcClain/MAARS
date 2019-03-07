@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const url = require("url");
 const cred = require('./credentials');
 
+const convert = require('pojo2xml');
+const format = require('xformatting');
+
 // mongoose models
 const Locations = require ('./models/Location.model');
 const Jobs = require('./models/Job.model');
@@ -82,5 +85,79 @@ module.exports.deleteUser = (req, res, next) => {
     
 }
 
+module.exports.locationXmlExport = (req, res, next) => {
+    Locations.find({}, (err, locations) => {
+        if(err) {console.log('Error : %s ', err)}
+        console.log('Start XML Conversion...');
+        locations = JSON.stringify(locations);
+        locations = JSON.parse(locations);
+        
+        locations = convert(locations);
 
+        res.write(locations.toString());
+        console.log(locations);
+
+        
+    });
+}
+
+module.exports.locationJsonExport = (req, res, next) => {
+    Locations.find({}, (err, locations) => {
+        if(err) {console.log("Error : %s ", err);}
+        
+        res.status(200).send(locations);
+        console.log(locations);
+    });   
+}
+module.exports.jobXmlExport = (req, res, next) => {
+    Jobs.find({}, (err, jobs) => {
+        if(err) {console.log('Error : %s ', err)}
+        console.log('Start XML Conversion...');
+        jobs = JSON.stringify(jobs);
+        jobs = JSON.parse(jobs);
+        
+        jobs = convert(jobs);
+
+        res.write(jobs.toString());
+        console.log(jobs);
+
+        
+    });
+}
+
+module.exports.jobJsonExport = (req, res, next) => {
+    Jobs.find({}, (err, jobs) => {
+        if(err) {console.log("Error : %s ", err);}
+        
+        res.status(200).send(jobs);
+        console.log(jobs);
+    });    
+
+}
+
+module.exports.userXmlExport = (req, res, next) => {
+    Users.find({}, (err, users) => {
+        if(err) {console.log('Error : %s ', err)}
+        console.log('Start XML Conversion...');
+        users = JSON.stringify(users);
+        users = JSON.parse(users);
+        
+        users = convert(users);
+
+        res.write(users.toString());
+        console.log(users);
+
+        
+    });
+}
+
+module.exports.userJsonExport = (req, res, next) => {
+    Users.find({}, (err, users) => {
+        if(err) {console.log("Error : %s ", err);}
+        
+        res.status(200).send(users);
+        console.log(users);
+    });
+        
+}
 
