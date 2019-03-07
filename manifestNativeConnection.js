@@ -1,7 +1,6 @@
 
 var http = require("https");
 const mongoose = require ("mongoose");
-const staticCredentials = require('./credentials');
 const bodyParser = require("body-parser");
 const url = require("url");
 var authToken;
@@ -9,15 +8,6 @@ const Locations = require ('./models/Location.model');
 const cred = require('./credentials');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-
-let options = {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  promiseLibrary: global.Promise,
-  autoReconnect: true
-}
-let db = 'mongodb://' + cred.dbUser + ':' + cred.dbPassword + '@ds011785.mlab.com:11785/heroku_9lcp033p';
-mongoose.connect(db, options);
 
 
 //handle login
@@ -56,11 +46,11 @@ module.exports.submitLogin = (request, response, next) => {
       var responseBody = JSON.parse(body)
       // console.log(responseBody.user.token);
       authToken = responseBody.user.token;
-      request.session.jwt = responseBody.user.token;
-      request.session.name = 'Manifest';
+      // request.session.jwt = responseBody.user.token;
+      // request.session.name = 'Manifest';
       response.render('loginSuccessful');
-      console.log('Session jwt')
-      console.log(request.session.jwt);
+      // console.log('Session jwt')
+      // console.log(request.session.jwt);
     });
   });
   var parseRequest = url.parse(request.url, true).query;
@@ -114,7 +104,7 @@ module.exports.queryJobsWithEvidence = (request, response, next) => {
         "path": "/graphql/v2",
         "headers": {
           "Content-Type": "application/json",
-          "Authorization": session.jwt,
+          "Authorization": authToken,
           "cache-control": "no-cache",
           "Postman-Token": "6beff5c5-c5c2-47f4-9182-2be6f70d2ff8"
         }
