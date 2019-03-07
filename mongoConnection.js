@@ -161,3 +161,23 @@ module.exports.userJsonExport = (req, res, next) => {
         
 }
 
+module.exports.submitAddUser = (req, res, next) => {
+    console.log(req.params);
+    
+    // Users.create()
+
+    Users.find({}, (err, users) => {
+        if(err) {console.log("Error : %s ", err);}
+
+        res.render('mongoUsersView', {
+            title: 'Mongo Users',
+            data: users
+        });
+    });
+
+
+}
+
+module.exports.addUser = (req,res,next) => {
+    res.render('addUser');
+}
