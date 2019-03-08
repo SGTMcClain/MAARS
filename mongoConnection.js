@@ -167,6 +167,7 @@ module.exports.submitAddUser = (req, res, next) => {
     
     Users.create(req.query);
 
+
     Users.find({}, (err, users) => {
         if(err) {console.log("Error : %s ", err);}
 

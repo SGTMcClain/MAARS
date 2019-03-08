@@ -1,7 +1,14 @@
-<form action="/submitLogin" method="GET">
-    <label>Manifest Email</label>
-    <input type="text" name="email" placeholder="Email Address"><br>
-    <label>Password</label>
-    <input type="password" name="pass" placeholder="Password"><br>
-    <button type="submit">Submit</button>
-</form>
+{{#unless isLoggedIn}}
+
+    <form action="/submitLogin" method="GET">
+        <label>Manifest Email</label>
+        <input type="text" name="email" placeholder="Email Address"><br>
+        <label>Password</label>
+        <input type="password" name="pass" placeholder="Password"><br>
+        <button type="submit">Submit</button>
+    </form>
+{{/unless}}
+
+{{#if isLoggedIn}}
+    <div>Currently logged in!</div>
+{{/if}}
