@@ -136,6 +136,7 @@ module.exports.jobJsonExport = (req, res, next) => {
 }
 
 module.exports.userXmlExport = (req, res, next) => {
+    let xmlheader = '<?xml version="1.0" encoding="UTF-8"?>'
     Users.find({}, (err, users) => {
         if(err) {console.log('Error : %s ', err)}
         console.log('Start XML Conversion...');
