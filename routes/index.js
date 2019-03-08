@@ -23,6 +23,10 @@ const xmlLocationExport = mongoConn.locationXmlExport;
 const jsonLocationExport = mongoConn.locationJsonExport;
 const xmlJobExport = mongoConn.jobXmlExport;
 const jsonJobExport = mongoConn.jobJsonExport;
+const submitAddUser = mongoConn.submitAddUser;
+const addUser = mongoConn.addUser;
+const editUser = mongoConn.editUser;
+const submitEditUser = mongoConn.submitEditUser;
 
 //router specs
 // router.get('/', (req, res, next) => {
@@ -31,6 +35,7 @@ const jsonJobExport = mongoConn.jobJsonExport;
 
 router.get('/', loginPage);
 router.get('/submitLogin', submitLogin);
+router.get('/submitAddUser', submitAddUser);
 router.get('/displayUsers', queryUsers);
 router.get('/locations', queryLocations);
 router.get('/jobs', queryJobsWithEvidence);
@@ -44,5 +49,8 @@ router.get('/xmlExportLocation', xmlLocationExport);
 router.get('/jsonExportLocation', jsonLocationExport);
 router.get('/xmlExportJob', xmlJobExport);
 router.get('/jsonExportJob', jsonJobExport);
+router.get('/addUser', addUser);
+router.get('/editUser/:_id', editUser);
+router.get('/submitEditUser', submitEditUser);
 
 module.exports = router;
