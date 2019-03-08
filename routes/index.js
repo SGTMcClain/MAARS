@@ -5,6 +5,7 @@ const router = express.Router();
 // const manifest = require("../manifestConnection"); //talk to manifest
 const manifest = require("../manifestNativeConnection"); 
 const loginPage = manifest.login;
+const logout = manifest.logout;
 const submitLogin = manifest.submitLogin;
 const queryJobsWithEvidence = manifest.queryJobsWithEvidence;
 // const queryAllJobs
@@ -34,6 +35,7 @@ const submitEditUser = mongoConn.submitEditUser;
 // });
 
 router.get('/', loginPage);
+router.get('/logout', logout);
 router.get('/submitLogin', submitLogin);
 router.get('/submitAddUser', submitAddUser);
 router.get('/displayUsers', queryUsers);
@@ -52,5 +54,6 @@ router.get('/jsonExportJob', jsonJobExport);
 router.get('/addUser', addUser);
 router.get('/editUser/:_id', editUser);
 router.get('/submitEditUser', submitEditUser);
+
 
 module.exports = router;

@@ -1,4 +1,3 @@
-
 var http = require("https");
 const mongoose = require ("mongoose");
 const bodyParser = require("body-parser");
@@ -6,12 +5,22 @@ const url = require("url");
 var authToken;
 const Locations = require ('./models/Location.model');
 const cred = require('./credentials');
-const cookieParser = require('cookie-parser');
+
 const session = require('express-session');
+
+//JWT & Passport
+const JWTstrategy = require('passport-jwt-cookiecombo');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const express = require('express');
+
+
 
 
 //handle login
 module.exports.login = (request, response, next) => {
+  
   console.log("Login Page");
   response.render('login');
     console.log(request.cookies);
@@ -42,25 +51,43 @@ module.exports.submitLogin = (request, response, next) => {
   
     res.on("end", function () {
       var body = Buffer.concat(chunks);
-      // console.log(JSON.parse(body));
-      var responseBody = JSON.parse(body)
-      // console.log(responseBody.user.token);
-      authToken = responseBody.user.token;
-      // request.session.jwt = responseBody.user.token;
-      // request.session.name = 'Manifest';
-      response.render('loginSuccessful');
-      // console.log('Session jwt')
+
+      var responseBody = JSON.parse(body);
+
+      console.log('response body: ')
+      console.log(responseBody);
+
+      try{
+        response.cookie('manifestJWT', responseBody.user.token,{
+          maxAge: 1000 * 60 * 60 * 24
+        });
+      } catch (err){
+        console.log("Error: " + err);
+      }
+
+
+      if(request.cookies['manifestJWT'] ){
+        request.app.locals.isLoggedIn = true;
+        next(response.render('loginSuccessful'));
+      } else {
+        next(response.write('Login Failed'));
+      }
+      
+      
+      console.log(request.app.locals.isLoggedIn);
       // console.log(request.session.jwt);
     });
   });
   var parseRequest = url.parse(request.url, true).query;
   console.log(parseRequest);
-  console.log("Request Email: " + parseRequest.email + "\nRequest Password: " + parseRequest.pass);
+  // console.log("Request Email: " + parseRequest.email + "\nRequest Password: " + parseRequest.pass);
   req.write(JSON.stringify({ email: parseRequest.email, password: parseRequest.pass }));
   req.end();
 }
 
 module.exports.queryUsers = (request, response, next) => {
+    
+
 
     var options = {
         "method": "POST",
@@ -68,7 +95,7 @@ module.exports.queryUsers = (request, response, next) => {
         "path": "/graphql/v2",
         "headers": {
           "Content-Type": "application/json",
-          "Authorization": authToken,
+          "Authorization": request.cookies['manifestJWT'],
           "cache-control": "no-cache",
           "Postman-Token": "6beff5c5-c5c2-47f4-9182-2be6f70d2ff8"
         }
@@ -104,7 +131,7 @@ module.exports.queryJobsWithEvidence = (request, response, next) => {
         "path": "/graphql/v2",
         "headers": {
           "Content-Type": "application/json",
-          "Authorization": authToken,
+          "Authorization": request.cookies['manifestJWT'],
           "cache-control": "no-cache",
           "Postman-Token": "6beff5c5-c5c2-47f4-9182-2be6f70d2ff8"
         }
@@ -139,7 +166,7 @@ module.exports.queryListofLocations = (request, response, next) => {
         "path": "/graphql/v2",
         "headers": {
           "Content-Type": "application/json",
-          "Authorization": authToken,
+          "Authorization": request.cookies['manifestJWT'],
           "cache-control": "no-cache",
           "Postman-Token": "6beff5c5-c5c2-47f4-9182-2be6f70d2ff8"
         }
@@ -170,5 +197,12 @@ module.exports.queryListofLocations = (request, response, next) => {
       
       req.write(JSON.stringify({ query: 'query{locations{locationId, name, owner, longitude, latitude, description, locationId, associatedFiles {id, name, fileType}, childLocations{locationId, name, owner, longitude, latitude, description, locationId,childLocations{locationId, name, owner, longitude}}}}' }));
       req.end();
+}
+
+module.exports.logout = (request, response, next) => {
+  
+    response.clearCookie('manifestJWT');
+    request.app.locals.isLoggedIn = false;
+    next(response.render('login'));
 }
 

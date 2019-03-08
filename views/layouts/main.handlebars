@@ -37,15 +37,17 @@
 			<li class="nav-item">
 			<a class="nav-link" href="/">Home</a>
 			</li>
-			<li class="nav-item">
-			<a class="nav-link" href="/displayUsers">Users</a>
-			</li>
-			<li class="nav-item">
-			<a class="nav-link" href="/jobs">Jobs w/Evidence</a>
-			</li>
-			<li class="nav-item">
-			<a class="nav-link" href="/locations">Locations</a>
-			</li>
+			{{#if isLoggedIn}}
+				<li class="nav-item">
+				<a class="nav-link" href="/displayUsers">Users</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="/jobs">Jobs w/Evidence</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="/locations">Locations</a>
+				</li>
+			{{/if}}
 			<li class="nav-item"></li>
 			<a class="nav-link" href="/mongoUsers">Mongo Users</a>
 			</li>
@@ -55,6 +57,12 @@
 			<li class="nav-item">
 			<a class="nav-link" href="/mongoLocations">Mongo Locations</a>
 			</li>
+			{{#if isLoggedIn}}
+				<li class="nav-item">
+				<a class="nav-link" href="/logout">Logout</a>
+				</li>
+			{{/if}}
+
 		</ul>
 	</nav>
 

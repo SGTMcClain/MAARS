@@ -29,14 +29,6 @@ let db = 'mongodb://' + cred.dbUser + ':' + cred.dbPassword + '@ds011785.mlab.co
 
 mongoose.connect(db, options);
 
-// Users.create({
-//     id: "100",
-//     firstName: "Test",
-//     lastName: "User",
-//     email: "test@user.com" 
-// })
-
-
 app.engine('handlebars', 
     handlebars({
         defaultLayout: 'main' //this should be the main page
@@ -69,9 +61,13 @@ app.use(session({
     }
 }));
 
+app.locals.isLoggedin;
+
 //Routing
 var routes = require('./routes/index');
-app.use('/', routes);
+app.use('/', routes, (req, res, next) => {
+
+});
 
 // app.use((req, res) => {
 //     res.status(404);
