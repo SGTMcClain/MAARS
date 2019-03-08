@@ -25,6 +25,8 @@ const xmlJobExport = mongoConn.jobXmlExport;
 const jsonJobExport = mongoConn.jobJsonExport;
 const submitAddUser = mongoConn.submitAddUser;
 const addUser = mongoConn.addUser;
+const editUser = mongoConn.editUser;
+const submitEditUser = mongoConn.submitEditUser;
 
 //router specs
 // router.get('/', (req, res, next) => {
@@ -48,5 +50,7 @@ router.get('/jsonExportLocation', jsonLocationExport);
 router.get('/xmlExportJob', xmlJobExport);
 router.get('/jsonExportJob', jsonJobExport);
 router.get('/addUser', addUser);
+router.get('/editUser/:_id', editUser);
+router.get('/submitEditUser', submitEditUser);
 
 module.exports = router;

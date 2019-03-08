@@ -1,0 +1,24 @@
+<form action="/submitEditUser/" method="GET">
+    <div class="form-group">
+        <label for="show_id">_id</label>
+        <input type="text" class="form-control-plaintext" name="_id" value={{data._id}} readonly >
+    </div>
+    <div class="form-group">
+        <label for="editUserFirstName">First Name</label>
+        <input type="text" class="form-control-plaintext" name="firstName" value={{data.firstName}}>
+    </div>
+    <div class="form-group">
+        <label for="editUserLastName">Last Name</label>
+        <input type="text" class="form-control-plaintext" name="lastName" value={{data.lastName}}>
+    </div>
+    <div class="form-group">
+        <label for="editUserEmail">Email</label>
+        <input type="email" class="form-control-plaintext" name="email" value={{data.email}}>
+    </div>
+    <div class="form-group">
+        <label for="editUser">Title</label>
+        <input type="text" class="form-control-plaintext" name="title" value={{data.title}}>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>

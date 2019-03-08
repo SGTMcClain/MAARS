@@ -181,3 +181,46 @@ module.exports.submitAddUser = (req, res, next) => {
 module.exports.addUser = (req,res,next) => {
     res.render('addUser');
 }
+
+module.exports.editUser = (req, res, next) => {
+    console.log(req.params);
+    Users.findById(req.params, (err, user) => {
+        if (err) return res.status(500).send(err);
+
+        res.render('editUser', {
+            title: 'Edit User',
+            data: user
+        });
+
+    });
+    
+    
+}
+
+module.exports.submitEditUser = (req, res, next) => {
+    console.log(req.query);
+    console.log(req.query.firstName);
+
+    let query = {_id: req.query._id}
+    
+    Users.findById(req.query._id, (err, doc) => {
+        if (err) {console.log("Error : %s ", err);}
+
+        doc.firstName = req.query.firstName;
+        doc.lastName = req.query.lastName;
+        doc.email = req.query.email;
+        doc.title = req.query.title;
+        doc.save();
+    })
+
+    Users.find({}, (err, users) => {
+        if(err) {console.log("Error : %s ", err);}
+
+        res.render('mongoUsersView', {
+            title: 'Mongo Users',
+            data: users
+        });
+    });
+
+
+}
